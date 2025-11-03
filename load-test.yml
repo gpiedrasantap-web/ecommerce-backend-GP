@@ -1,0 +1,36 @@
+config:
+  target: 'http://localhost:3000'
+  phases:
+    - duration: 30
+      arrivalRate: 5
+      name: "Carga suave"
+    - duration: 20
+      arrivalRate: 10
+      name: "Carga media"
+    - duration: 10
+      arrivalRate: 20
+      name: "Pico de carga"
+  defaults:
+    headers:
+      Content-Type: 'application/json'
+      User-Agent: 'Artillery Load Test'
+
+scenarios:
+  - name: "Health Check"
+    flow:
+      - get:
+          url: "/api/health"
+
+  - name: "Obtener Productos"
+    flow:
+      - get:
+          url: "/api/test-products"
+
+  - name: "Flujo Completo"
+    flow:
+      - get:
+          url: "/api/health"
+      - think: 1
+      - get:
+          url: "/api/test-products"
+      - think: 2

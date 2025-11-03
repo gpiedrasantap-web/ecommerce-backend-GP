@@ -66,6 +66,20 @@ pipeline {
                 }
             }
         }
+
+        stage('Pruebas de Carga - Artillery') {
+            steps {
+                dir('backend') {
+                    bat """
+                    npm install -g artillery
+                    artillery run load-test.yml --output load-test-report.json
+                    """
+                    bat 'type load-test-report.json'
+                }
+            }
+        }
+
+
         
         stage('Generar Evidencia COMPLETA') {
             steps {
